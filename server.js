@@ -16,7 +16,7 @@ app.use(express.json());
 //setup middleware to server static files from /public
 app.use(express.static('public'));
 
-
+// link to routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
