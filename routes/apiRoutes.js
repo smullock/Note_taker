@@ -21,7 +21,7 @@ module.exports = function (app) {
         let newNote = {
             title: req.body.title,
             text: req.body.text,
-            id: uniqid
+            id: uniqid();
         }
         fs.readFile(__dirname + "/../db/db.json", (err, data) => {
             if (err) throw err;
