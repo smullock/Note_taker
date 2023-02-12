@@ -24,7 +24,7 @@ app.get("/", (req, res) =>
 
 //return the notes.html file
 app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, "/public/notes.html"))
+  res.sendFile(path.join(__dirname, "/notes.html"))
 );
 
 //return the index.html file
