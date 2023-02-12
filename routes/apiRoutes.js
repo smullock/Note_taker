@@ -1,10 +1,11 @@
-// Dependencies
+
 const fs = require("fs");
 const uniqid = require("uniqid");
 const db = require("../db/db.json")
 
 // Routing
 module.exports = function (app) {
+    
     // API GET request
     app.get("/api/notes", function (req, res) {
         fs.readFile(__dirname + "/../db/db.json", (err, data) => {
