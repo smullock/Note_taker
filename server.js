@@ -4,7 +4,7 @@ const path = require('path');
 
 // Initialize our app variable by setting it to the value of express()
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT ||5001;
 const fs = require("fs");
 const data = require("./db/db.json")
 var uniqid = require('uniqid');
