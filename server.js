@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT ||3000;
 const fs = require("fs");
-const data = require("./db/db.json")
+const db = require("./db/db.json")
 var uniqid = require('uniqid');
 
 
@@ -25,7 +25,7 @@ app.get('/', (req, res) =>
 );
 
 // GET Route for Notes 
-app.get('/feedback', (req, res) =>
+app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
@@ -35,7 +35,7 @@ app.get('/feedback', (req, res) =>
 //GET /api/notes should read the db.json file and return all saved notes as JSON.
 app.get('/api/notes', (req, res) => {
 
-  fs.readFile('./db/db.json', 'utf-8',(err,data) => {
+  fs.readFile(__dirname + './db/db.json', 'utf-8',(err,data) => {
     if(err){
       console.log(err);
      } else {
@@ -47,40 +47,40 @@ app.get('/api/notes', (req, res) => {
 //POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client. You'll need to find a way to give each note a unique id when it's saved (look into npm packages that could do this for you).
 
 app.post('/api/notes', (req, res) => {
-  console.log(`${req.method} request received to add a note`)
-
-  const {title, text} = req.body;
-
-  if (title && text) {
-      const newNote = {
-          title,
-          text,
-          id: uniqid()
-      }
-
-      fs.readFile('./db/db.json', 'utf-8', (err, data) => {
-          if (err) {
-              console.log(err);
-          } else {
-              const parsedNotes = JSON.parse(data);
-              parsedNotes.push(newNote)
-              fs.writeFile('./db/db.json', JSON.stringify(parsedNotes, null, 4), (err) => {
-                  err ? console.log(err) : console.log('successfully added note')
-              })
+        let allNotes = [];
+        let newNote = {
+            title: req.body.title,
+            text: req.body.text,
+            id: uniqid,
           }
-      })
+        fs.readFile(__dirname + "./db/db.json", (err, data) => {
+            if (err) throw err;
+            allNotes = JSON.parse(data);
+            allNotes.push(newNote);
+            fs.writeFile(__dirname + "./db/db.json", JSON.stringify(allNotes), "utf-8", (err) => {
+                if (err) throw err;
+                console.log("The note has been saved.")
+                res.end();
+            })
+        })
+        console.log(newNote)
+    });
+  
+ // DELETE note
+ app.delete("/api/notes/:id", (req, res) => {
+    let noteId = req.params.id;
+    fs.readFile(__dirname + "./db/db.json", (err, data) => {
+      if (err) throw err;
+      let notesDB = JSON.parse(data);
+      const filteredNotes = notesDB.filter(values => values.id != noteId);
+      fs.writeFile(__dirname + "./db/db.json", JSON.stringify(filteredNotes), "utf-8", err => {
+          if (err) throw err;
+          console.log("The note has been deleted.")
+          res.end();
+      });
+  });
+});
 
-      const response = {
-          status: 'success',
-          body: newNote
-      }
-
-      console.log(response);
-      res.json(response);
-  } else {
-      res.json('unable to post note')
-  }
-})
 
 
 //return the index.html file
