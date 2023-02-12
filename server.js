@@ -24,7 +24,7 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
-// GET Route for Notes 
+// GET Route for Notes page
 app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
@@ -37,7 +37,7 @@ app.get('/api/notes', (req, res) => {
     if(err){
       console.log(err);
      } else {
-      res.json(JSON.parse(data));
+      res.json(JSON.parse(db));
     }
   })
    console.info(`${req.method} request received to get notes`);
