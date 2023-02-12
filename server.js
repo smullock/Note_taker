@@ -19,12 +19,12 @@ app.use(express.json());
 
 
 app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "/public/index.html"))
+  res.sendFile(path.join(__dirname, '/index.html'))
 );
 
 //return the notes.html file
 app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, "/notes.html"))
+  res.sendFile(path.join(__dirname, '/notes.html'))
 );
 
 //return the index.html file
