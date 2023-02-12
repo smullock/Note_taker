@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT ||3000;
 const fs = require("fs");
-const db = require("./db/db.json")
+const datbase = require("./db/db.json")
 var uniqid = require('uniqid');
 
 
@@ -33,20 +33,21 @@ app.get('/notes', (req, res) =>
 //GET request for notes and pass to db
 app.get('/api/notes', (req, res) => {
 
-  fs.readFile('./db/db.json', 'utf-8',(err,data) => {
-    if(err){
-      console.log(err);
-     } else {
-      res.json(JSON.parse(db));
-    }
-  })
-   console.info(`${req.method} request received to get notes`);
+  res.json(datbase);
+  // fs.readFile('./db/db.json', 'utf-8',(err,data) => {
+  //   if(err){
+  //     console.log(err);
+  //    } else {
+  //     res.json(JSON.parse(data));
+  //   }
+  // })
+  //  console.info(`${req.method} request received to get notes`);
 });
 
 //post request for notes. 
 
 app.post('/api/notes', (req, res) => {
-        let allNotes = [];
+        //let allNotes = [];
         let newNote = {
             title: req.body.title,
             text: req.body.text,
@@ -55,8 +56,8 @@ app.post('/api/notes', (req, res) => {
         fs.readFile('./db/db.json', (err, data) => {
             if (err) throw err;
             allNotes = JSON.parse(data);
-            allNotes.push(newNote);
-            fs.writeFile(__dirname + "./db/db.json", JSON.stringify(allNotes), "utf-8", (err) => {
+            datbase.push(newNote);
+            fs.writeFile(__dirname + "./db/db.json", JSON.stringify(datbase), "utf-8", (err) => {
                 if (err) throw err;
                 console.log("The note has been saved.")
                 res.end();
