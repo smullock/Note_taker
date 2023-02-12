@@ -30,21 +30,20 @@ app.get('/notes', (req, res) =>
 );
 
 
-
-
-//GET /api/notes should read the db.json file and return all saved notes as JSON.
+//GET request for notes and pass to db
 app.get('/api/notes', (req, res) => {
 
-  fs.readFile(__dirname + './db/db.json', 'utf-8',(err,data) => {
+  fs.readFile('./db/db.json', 'utf-8',(err,data) => {
     if(err){
       console.log(err);
      } else {
       res.json(JSON.parse(data));
     }
   })
+   console.info(`${req.method} request received to get notes`);
 });
 
-//POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client. You'll need to find a way to give each note a unique id when it's saved (look into npm packages that could do this for you).
+//post request for notes. 
 
 app.post('/api/notes', (req, res) => {
         let allNotes = [];
@@ -53,7 +52,7 @@ app.post('/api/notes', (req, res) => {
             text: req.body.text,
             id: uniqid,
           }
-        fs.readFile(__dirname + "./db/db.json", (err, data) => {
+        fs.readFile('./db/db.json', (err, data) => {
             if (err) throw err;
             allNotes = JSON.parse(data);
             allNotes.push(newNote);
@@ -69,7 +68,7 @@ app.post('/api/notes', (req, res) => {
  // DELETE note
  app.delete("/api/notes/:id", (req, res) => {
     let noteId = req.params.id;
-    fs.readFile(__dirname + "./db/db.json", (err, data) => {
+    fs.readFile('./db/db.json', (err, data) => {
       if (err) throw err;
       let notesDB = JSON.parse(data);
       const filteredNotes = notesDB.filter(values => values.id != noteId);
@@ -83,7 +82,7 @@ app.post('/api/notes', (req, res) => {
 
 
 
-//return the index.html file
+//list to connection
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
 );
