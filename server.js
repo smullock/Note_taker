@@ -10,21 +10,23 @@ const data = require("./db/db.json")
 var uniqid = require('uniqid');
 
 
-//setup middleware to server static files from /public
-app.use(express.static('public'));
+
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//setup middleware to server static files from /public
+app.use(express.static('public'));
 
-app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "../public/index.html"))
+// GET Route for homepage
+app.get('/', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
-//return the notes.html file
-app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, "../public/notes.html"))
+// GET Route for Notes 
+app.get('/feedback', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
 
